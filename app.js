@@ -6,9 +6,19 @@ app.use(bodyParser.json());
 const { Todo } = require("./models");
 
 // eslint-disable-next-line no-unused-vars
-app.get("/todos", (req, res) => {
+app.get("/todos", async (req, res) => {
   // res.send("Hello World!")
-  console.log("Todo list");
+  // console.log("Todo list");
+  try {
+    const todos = await Todo.findAll()
+    res.json(todos)
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(422).json(error);
+  }
+ 
+
 });
 
 app.post("/todos", async (req, res) => {
@@ -41,8 +51,19 @@ app.put("/todos/:id/markAsCompleted", async (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-app.delete("/todos/:id", (req, res) => {
+app.delete("/todos/:id", async (req, res) => {
   console.log("Delete a todo by ID: ", req.params.id);
+  try {
+    const a = await Todo.destroy({
+      where: {
+        id: req.params.id,
+      },
+    }); 
+    return a ?  res.send(true): res.send(false)
+  } catch (error) {
+    console.log(error);
+    return res.status(422).json(error);
+  }
 });
 
 module.exports = app;
