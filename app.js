@@ -1,9 +1,28 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const path = require("path")
 app.use(bodyParser.json());
 
 const { Todo } = require("./models");
+
+app.set("view engine", "ejs")
+
+app.get("/",async(req,res)=>{
+  const allTodos = await Todo.getTodo();
+  if(req.accepts('html')){
+    res.render("index",{
+      allTodos
+    })
+  }else{
+    res.json({
+      allTodos
+    })
+  }
+  res.render("index")
+})
+
+app.use(express.static(path.join(__dirname,'public')))
 
 // eslint-disable-next-line no-unused-vars
 app.get("/todos", async (req, res) => {
