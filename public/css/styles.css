@@ -1,0 +1,15 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+    background-color: while;    
+}
+
+
+  
+.Todo-Item:hover .trash-icon {
+  display: inline-block;
+}
+
+.trash-icon {
+  display: none; /* Hidden by default */
+  cursor: pointer;
+}
