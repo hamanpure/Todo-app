@@ -62,13 +62,13 @@ You can see the app live at: [Todo App Deployment](https://hamanpurevaibhav.onre
    For development (with `nodemon` auto-reloading):
 
    ```bash
-   npm run start
+   npm start
    ```
 
    For production:
 
    ```bash
-   npm run start:prod
+   npm start:prod
    ```
 
 6. **Open the app in your browser:**
@@ -82,7 +82,7 @@ You can see the app live at: [Todo App Deployment](https://hamanpurevaibhav.onre
 The app includes tests for key features like sign-in, sign-out, add todo, delete todo, and mark todo as complete. To run the tests:
 
 ```bash
-npm run test
+npm test
 ```
 
 ## Project Structure
