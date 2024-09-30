@@ -1,10 +1,8 @@
-body{
-    font-family: 'Courier New', Courier, monospace;
-    background-color: while;    
+body {
+  font-family: "Courier New", Courier, monospace;
+  background-color: white;
 }
 
-
-  
 .Todo-Item:hover .trash-icon {
   display: inline-block;
 }

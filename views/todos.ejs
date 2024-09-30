@@ -1,97 +1,73 @@
-<div>
-    <div class="flex">
-        <!-- Overdue -->
-        <h5 class="font-bold text-base" >Overdue</h5>
-        <div class="text-base font-bold px-3  box-content ml-2 mb-2 rounded bg-gray-200">
-            <% count = 0 %>
-            <% for( let i = 0; i < allTodos.length; i++ ) { %>
-                <% if (allTodos[i].dueDate < new Date().toISOString().split("T")[0]) { %>
-                    <% count+=1 %>
-                <% } %>
-                <% } %>
-            <%= count %>
-          </div>
-    </div>
-    <% for( let i = 0; i < allTodos.length; i++ ) { %>
-    <% if (allTodos[i].dueDate < new Date().toISOString().split("T")[0]) { %>
-    <ul class="list-none">
-        <li class="Todo-Item">
-            <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-                <input id="todo-checkbox-<%= allTodos[i].id %>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 ">
-                <label for="todo-checkbox-<%= allTodos[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%= allTodos[i].title %></label>
-                <a href="" class="hidden trash-icon ml-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                      </svg>    
-                </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <title>
+        <%- title %>
+    </title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        var token = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content")
+        function updateTodo(id){
+            fetch(`/todos/${id}`,{
+                method: "put",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token
+                })
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.reload();
+                }
+            }).catch((error)=> console.log(error));
+
+        }
+        function deleteTodo(id){
+            fetch(`/todos/${id}`,{
+                method: "delete",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token
+                })
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.reload();
+                }
+            }).catch((error)=> console.log(error));
+
+        }
+       
+    </script>
+</head>
+<body>
+    <div class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+            <%- include('header.ejs')  %>
+            <a href="/signout">signout</a>
+            <%- include('notifications.ejs') %>
+            <form action="/todos" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="flex gap-2 py-4">
+                <div class="flex-auto">
+                    <input type="text" name="title" placeholder="What's next?" required class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm">
+                </div>
+                <div class="flex-auto">
+                    <input type="date" name="dueDate" required class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4">
+                </div>
+                <div class="flex-none">
+                    <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded mb-2 mr-2 font-medium">Add</button>
+                </div>
             </div>
-        </li>
-    </ul>
-    <% } %>
-    <% } %>
-
-    <!-- Due Today -->
-    <div class="flex">
-        <h5 class="font-bold text-base"  >Due Today</h5>
-        <div class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
-            <% count = 0 %>
-            <% for( let i = 0; i < allTodos.length; i++ ) { %>
-                <% if (allTodos[i].dueDate === new Date().toISOString().split("T")[0]) { %>
-                    <% count+=1 %>
-                <% } %>
-                <% } %>
-            <%= count %>
-          </div>
+            </form>
+            <%- include('todo.ejs')  %>
+        </div>
     </div>
-    <% for( let i = 0; i < allTodos.length; i++ ) { %>
-        <% if (allTodos[i].dueDate === new Date().toISOString().split("T")[0]) { %>
-        <ul class="list-none">
-            <li class="Todo-Item">
-                <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-                    <input id="todo-checkbox-<%= allTodos[i].id %>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 ">
-                    <label for="todo-checkbox-<%= allTodos[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%= allTodos[i].title %></label>
-                    <a href="" class="hidden trash-icon ml-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                          </svg>    
-                    </a>
-                </div>
-            </li>
-        </ul>
-        <% } %>
-        <% } %>
-
-    <!-- Due Later -->
-    <div class="flex">
-        <h5 class="font-bold text-base"  >Due Later</h5>
-        <div class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
-            <% count = 0 %>
-            <% for( let i = 0; i < allTodos.length; i++ ) { %>
-                <% if (allTodos[i].dueDate > new Date().toISOString().split("T")[0]) { %>
-                    <% count+=1 %>
-                <% } %>
-                <% } %>
-            <%= count %>
-          </div>
-    </div>
-    <% for( let i = 0; i < allTodos.length; i++ ) { %>
-        <% if (allTodos[i].dueDate >new Date().toISOString().split("T")[0]) { %>
-        <ul class="list-none">
-            <li class="Todo-Item">
-                <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-                    <input id="todo-checkbox-<%= allTodos[i].id %>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 ">
-                    <label for="todo-checkbox-<%= allTodos[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%= allTodos[i].title %></label>
-                    <a href="" class="hidden trash-icon ml-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                          </svg>    
-                    </a>
-                </div>
-            </li>
-        </ul>
-        <% } %>
-        <% } %>
-
-</div>
-
-
+    <%- include('footer.ejs')  %>
+    
+</body>
+</html>
