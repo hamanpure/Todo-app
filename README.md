@@ -112,11 +112,3 @@ The app is deployed on Render. To deploy, follow these steps:
 1. Fork the repository and connect it with your Render account.
 2. Set up environment variables for PostgreSQL.
 3. Deploy the application from the Render dashboard.
-
-## License
-
-This project is licensed under the ISC License. Feel free to use and modify.
-
----
-
-This `README.md` provides a comprehensive overview of your app, its features, and the setup process!
