@@ -1,112 +1,122 @@
 # Todo App
 
-A feature-rich Todo App built using Node.js, Express, and Sequelize, with user authentication, session management, and CSRF protection. The app allows users to create an account, log in, manage their todos (add, delete, mark as complete), and stay secure with session-based login and CSRF protection. Automated tests are implemented using Jest.
+A simple Todo application that allows users to manage their tasks with authentication and session login features. Users can sign up, log in, add, view, mark as complete, and delete tasks (todos). The app also includes test coverage for core features.
 
 ## Features
 
-- **User Authentication**: Sign up, log in, log out
-- **Todo Management**: Add, delete, and mark todos as completed
-- **Session-Based Login**: Persistent login sessions with Express-Session
-- **CSRF Protection**: Secure forms with CSRF tokens
-- **Flash Messages**: Real-time feedback on actions such as login failure, signup validation, etc.
-- **Automated Testing**: Tests for login, signup, adding todos, and more using Jest and Supertest
+- **User Authentication**: Sign up and log in with email and password.
+- **CSRF Protection**: Secure application with CSRF tokens for critical requests.
+- **Task Management**: Add, view, mark tasks as complete, and delete todos.
+- **Flash Messages**: Error and success messages are displayed using connect-flash.
+- **Sequelize ORM**: Database interaction via Sequelize, with support for PostgreSQL.
+- **Session Management**: User sessions are managed using express-session.
+- **Form Validation**: Handles user inputs with validation for signup, login, and todo creation.
 
-## Tech Stack
+## Live Demo
 
-- **Backend**: Node.js, Express.js
-- **Authentication**: Passport.js (local strategy)
-- **Database**: PostgreSQL (via Sequelize ORM)
-- **Templating**: EJS
-- **Security**: CSRF protection using `tiny-csrf`
-- **Session Management**: Express-session
-- **Testing**: Jest, Supertest
-- **Other Tools**: Nodemon (development), ESLint and Prettier (code quality), Husky (pre-commit hooks)
+You can see the app live at: [Todo App Deployment](https://hamanpurevaibhav.onrender.com/)
 
 ## Installation
 
-1. Clone the repository:
+### Prerequisites
+
+- Node.js (v14 or higher)
+- PostgreSQL (v12 or higher)
+
+### Steps
+
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/hamanpure/Todo-app.git
    cd Todo-app
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 
    ```bash
    npm install
    ```
 
-3. Set up environment variables:
+3. **Set up environment variables:**
 
-   Create a `.env` file in the root directory with the following details:
+   Create a `.env` file and add your PostgreSQL database credentials:
 
-   ```
-   DB_NAME=your_database_name
-   DB_USER=your_database_user
-   DB_PASSWORD=your_database_password
-   DB_HOST=your_database_host
-   SESSION_SECRET=your_session_secret
+   ```bash
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   DB_NAME=your_db_name
    ```
 
-4. Initialize the database:
+4. **Database Setup:**
 
-   Run the following commands to create the database and apply migrations:
+   Initialize the database and run migrations:
 
    ```bash
    npx sequelize-cli db:create
    npx sequelize-cli db:migrate
    ```
 
-5. Start the application:
+5. **Start the application:**
 
-   - For development (with live reloading):
+   For development (with `nodemon` auto-reloading):
 
-     ```bash
-     npm start
-     ```
+   ```bash
+   npm run start
+   ```
 
-   - For production:
+   For production:
 
-     ```bash
-     npm start:prod
-     ```
+   ```bash
+   npm run start:prod
+   ```
 
-## Usage
+6. **Open the app in your browser:**
 
-### User Authentication
+   ```bash
+   http://localhost:3000
+   ```
 
-- **Signup**: Go to `/signup`, create an account, and log in.
-- **Login**: Go to `/login`, enter your email and password to log in.
-- **Logout**: Click the signout button to log out of the session.
+## Running Tests
 
-### Todo Management
-
-- **Add Todo**: Once logged in, you can add todos by filling out the form on the `/todos` page.
-- **Mark Complete**: Mark any todo as completed.
-- **Delete Todo**: Remove any todo from the list.
-
-### Security Features
-
-- **CSRF Protection**: CSRF tokens are used to protect against cross-site request forgery.
-- **Session Management**: User login sessions are persistent and secure.
-
-## Testing
-
-To run the tests:
+The app includes tests for key features like sign-in, sign-out, add todo, delete todo, and mark todo as complete. To run the tests:
 
 ```bash
-npm test
+npm run test
 ```
 
-This will run all tests related to user authentication, todo creation, deletion, and marking as completed.
+## Project Structure
 
-## Code Quality
+- `app.js`: The main application file, defining routes and middleware.
+- `models/`: Contains Sequelize models for `User` and `Todo`.
+- `views/`: EJS templates for rendering the frontend.
+- `public/`: Static files like CSS and images.
+- `routes/`: API endpoints for todos and user authentication.
+- `test/`: Contains Jest tests for the core features.
 
-### Linting
+## Dependencies
 
-To run the linter:
+- `express`: Fast, unopinionated, minimalist web framework for Node.js.
+- `passport`: Authentication middleware for Node.js.
+- `sequelize`: ORM for SQL databases.
+- `ejs`: Embedded JavaScript templating for HTML rendering.
+- `nodemon`: Tool to automatically restart the server for changes.
+- `bcrypt`: Password hashing.
+- `connect-flash`: Flash messages for displaying errors or success.
+- `tiny-csrf`: Middleware for CSRF protection.
 
-```bash
-npx lint-staged
-```
+## Deployment
+
+The app is deployed on Render. To deploy, follow these steps:
+
+1. Fork the repository and connect it with your Render account.
+2. Set up environment variables for PostgreSQL.
+3. Deploy the application from the Render dashboard.
+
+## License
+
+This project is licensed under the ISC License. Feel free to use and modify.
+
+---
+
+This `README.md` provides a comprehensive overview of your app, its features, and the setup process!
